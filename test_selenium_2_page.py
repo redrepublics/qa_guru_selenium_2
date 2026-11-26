@@ -12,15 +12,21 @@ import selenium
 from selenium import webdriver
 
 driver = webdriver.Chrome
-
 base_url_text_box = 'https://qa-guru.github.io/one-page-form/text-box.html'
 base_url_login = 'https://qa-guru.github.io/one-page-form/login.html'
 
-def test_login(base_url):
-    base_url = base_url_login
-    print('Открываем сайт')
-    driver.get(base_url)
-    time.sleep(3)
-    driver.quit()
+@pytest.fixture
+def base_url():
+    return base_url_text_box
 
-test_login()
+@pytest.fixture
+def driver_login():
+    return webdriver.Chrome()
+
+
+def test_login(base_url,driver_login):
+    print('Открываем сайт')
+    driver_login.get(base_url)
+    time.sleep(3)
+    driver_login.quit()
+
