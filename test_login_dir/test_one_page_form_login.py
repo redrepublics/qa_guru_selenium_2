@@ -3,19 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-@pytest.fixture
-def base_url():
-    base_url_login = 'https://qa-guru.github.io/one-page-form/login.html'
-    return base_url_login
-
-
-@pytest.fixture
-def driver_login():
-    driver = webdriver.Chrome()
-    yield driver
-    driver.quit()
-
-
 def test_tc_01(base_url, driver_login):
     driver = driver_login
     driver.get(base_url)
