@@ -8,7 +8,6 @@
 
 import time
 import pytest
-import selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -25,23 +24,33 @@ def driver_login():
     yield driver
     driver.quit()
 
-# Happy Pass
+# happy pass - правильный логин и пароль
 def test_login(base_url,driver_login):
-    print('Открываем сайт')
     driver_login.get(base_url)
     time.sleep(3)
-    print('Вводим правильные тестовые данные')
     login_field = driver_login.find_element(By.ID, 'login-input')
     password_field = driver_login.find_element(By.ID, 'password-input')
     login_field.send_keys('user1')
     password_field.send_keys('password1')
-    print('Жмем на кнопку ввода')
     login_button = driver_login.find_element(By.ID, 'submit-button')
     login_button.click()
     time.sleep(5)
-    print('Сравниваем приветственное сообщение')
     welcome_message = driver_login.find_element(By.ID, 'welcome-message').text
     assert welcome_message == 'Welcome, user1!'
+
+#неправильный пароль
+def test_logout_error(base_url,driver_login):
+    driver_login.get(base_url)
+    time.sleep(3)
+    login_field = driver_login.find_element(By.ID, 'login-input')
+    password_field = driver_login.find_element(By.ID, 'password-input')
+    login_field.send_keys('user1')
+    password_field.send_keys('password_error')
+    login_button = driver_login.find_element(By.ID, 'submit-button')
+    login_button.click()
+    time.sleep(5)
+    error_message = driver_login.find_element(By.ID, 'error-message').text
+    assert error_message == 'Wrong login or password'
 
 
 
